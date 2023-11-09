@@ -2,11 +2,10 @@ package com.expertsoft.phoneshop.service;
 
 import com.expertsoft.phoneshop.persistence.model.Phone;
 import com.expertsoft.phoneshop.persistence.repository.PhoneRepository;
+import jakarta.annotation.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 @Service
 public class PhoneService {

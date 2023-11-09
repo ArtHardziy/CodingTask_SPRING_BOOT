@@ -22,4 +22,5 @@
         </c:forEach>
         </tbody>
     </table>
+
 </common:page>

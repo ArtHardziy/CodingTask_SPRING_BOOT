@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0</version>
+		<version>3.1.4</version>
 		<relativePath/>
 	</parent>
 	<groupId>com.expertsoft</groupId>
@@ -16,7 +16,7 @@
 	<description>The phone shop application</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>
@@ -50,7 +50,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<!--JSP related dependencies-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 			<scope>provided</scope>
@@ -59,12 +59,12 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>-->
 		<!--Front end dependencies-->
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
-			<version>4.3.1</version>
+			<version>5.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
