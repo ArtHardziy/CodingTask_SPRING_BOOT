@@ -2,6 +2,7 @@ package com.expertsoft.phoneshop.controller.page;
 
 import com.expertsoft.phoneshop.service.PhoneService;
 import jakarta.annotation.Resource;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +14,12 @@ import static com.expertsoft.phoneshop.PhoneShopConstants.PHONES_PATH;
 
 @Controller
 @RequestMapping(PHONES_PATH)
+@AllArgsConstructor
 public class PhoneListPageController {
 
     private static final String PHONE_LIST_PAGE = "phoneListPage";
     private static final String PHONES = "phones";
 
-    @Resource
     private PhoneService phoneService;
 
     @GetMapping
