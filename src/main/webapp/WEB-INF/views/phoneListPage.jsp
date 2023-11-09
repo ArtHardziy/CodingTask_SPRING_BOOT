@@ -5,7 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <common:page pageTitle="Phone list" showMenu="true">
     <div class="row justify-content-center font-italic mb-3">
-        Found <c:out value="${phones.totalElements}"/> results!
+        Found <c:out value="${phones.page().totalElements}"/> results!
     </div>
     <table class="table table-striped">
         <thead>
@@ -17,10 +17,12 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="phone" items="${phones.content}">
+        <c:forEach var="phone" items="${phones.page().content}">
             <phone:tile phone="${phone}"/>
         </c:forEach>
         </tbody>
     </table>
+    <common:paginationOnPage totalNumber="${phones.page().totalPages}" pageNum="${phones.pageNum()}" pageSize="${phones.pageSize()}" sortBy="${phones.sortBy()}" sortOrder="${phones.sortOrder()}">
+    </common:paginationOnPage>
 
 </common:page>

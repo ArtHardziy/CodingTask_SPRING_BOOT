@@ -1,19 +1,19 @@
 package com.expertsoft.phoneshop.controller.page;
 
 import com.expertsoft.phoneshop.service.PhoneService;
-import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.expertsoft.phoneshop.PhoneShopConstants.PHONES_PATH;
 
 @Controller
 @RequestMapping(PHONES_PATH)
+@Slf4j
 @AllArgsConstructor
 public class PhoneListPageController {
 
@@ -23,8 +23,13 @@ public class PhoneListPageController {
     private PhoneService phoneService;
 
     @GetMapping
-    public String getPhoneList(Model model) {
-        model.addAttribute(PHONES, phoneService.getPhonesPage(Pageable.unpaged()));
+    public String getPhoneList(@RequestParam(defaultValue = "1") String pageNum,
+                               @RequestParam(defaultValue = "5") String pageSize,
+                               @RequestParam(defaultValue = "id") String sortBy,
+                               @RequestParam(defaultValue = "ASC") String sortOrder,
+                               Model model) {
+        var phonesPage = phoneService.getPhonesPage(pageNum, pageSize, sortBy, sortOrder);
+        model.addAttribute(PHONES, phonesPage);
 
         return PHONE_LIST_PAGE;
     }

@@ -1,3 +1,7 @@
 body {
     overflow-x: hidden;
 }
+
+.page-item.hidden {
+    display: none;
+}

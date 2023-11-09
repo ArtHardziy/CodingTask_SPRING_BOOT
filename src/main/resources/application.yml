@@ -3,10 +3,15 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
-
   jpa:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
-#TODO
-#phoneshop.plp-max-pages=
+
+logging:
+  level:
+    com.expertsoft.phoneshop: DEBUG
+
+phoneshop:
+  plp:
+    maxPageSize: 5
