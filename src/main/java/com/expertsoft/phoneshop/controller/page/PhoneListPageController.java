@@ -24,12 +24,12 @@ public class PhoneListPageController {
 
     @GetMapping
     public String getPhoneList(@RequestParam(defaultValue = "1") String pageNum,
-                               @RequestParam(defaultValue = "5") String pageSize,
+                               @RequestParam(required = false) String pageSize,
                                @RequestParam(defaultValue = "id") String sortBy,
                                @RequestParam(defaultValue = "ASC") String sortOrder,
                                Model model) {
-        var phonesPage = phoneService.getPhonesPage(pageNum, pageSize, sortBy, sortOrder);
-        model.addAttribute(PHONES, phonesPage);
+        var phonesPlpDto = phoneService.getPhonesPage(pageNum, pageSize, sortBy, sortOrder);
+        model.addAttribute(PHONES, phonesPlpDto);
 
         return PHONE_LIST_PAGE;
     }

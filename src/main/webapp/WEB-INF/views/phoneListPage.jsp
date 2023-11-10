@@ -4,8 +4,9 @@
 <%@ taglib prefix="phone" tagdir="/WEB-INF/tags/phone" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <common:page pageTitle="Phone list" showMenu="true">
+    <c:set var="phonesPageDto" value="${phones.pageDto()}"/>
     <div class="row justify-content-center font-italic mb-3">
-        Found <c:out value="${phones.page().totalElements}"/> results!
+        Found <c:out value="${phonesPageDto.page().totalElements}"/> results!
     </div>
     <table class="table table-striped">
         <thead>
@@ -17,12 +18,12 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="phone" items="${phones.page().content}">
+        <c:forEach var="phone" items="${phonesPageDto.page().content}">
             <phone:tile phone="${phone}"/>
         </c:forEach>
         </tbody>
     </table>
-    <common:paginationOnPage totalNumber="${phones.page().totalPages}" pageNum="${phones.pageNum()}" pageSize="${phones.pageSize()}" sortBy="${phones.sortBy()}" sortOrder="${phones.sortOrder()}">
+    <common:paginationOnPage totalNumber="${phonesPageDto.page().totalPages}" pageNum="${phonesPageDto.pageNum()}" pageSize="${phonesPageDto.pageSize()}" sortBy="${phonesPageDto.sortBy()}" sortOrder="${phonesPageDto.sortOrder()}" pageDto="${phones}">
     </common:paginationOnPage>
 
 </common:page>

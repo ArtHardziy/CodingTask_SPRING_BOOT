@@ -14,4 +14,5 @@ logging:
 
 phoneshop:
   plp:
-    maxPageSize: 5
+    max-page-size: 5
+    max-number-of-pages: 5

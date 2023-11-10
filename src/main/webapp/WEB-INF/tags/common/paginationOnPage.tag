@@ -6,6 +6,7 @@
 <%@ attribute name="pageSize" type="java.lang.Integer" required="true" %>
 <%@ attribute name="sortBy" type="java.lang.String" required="true" %>
 <%@ attribute name="sortOrder" type="java.lang.String" required="true" %>
+<%@attribute name="pageDto" type="com.expertsoft.phoneshop.persistence.model.dto.PlpDto" required="true" %>
 
 <div class="float-right">
 <uL class="pagination justify-content-end">
@@ -18,10 +19,8 @@
             <span class="sr-only">Previous</span>
         </a>
     </li>
-
-    <c:set var="startPage" value="${pageNum <= 5 ? 1 : pageNum - 5}"/>
-    <c:set var="endPage" value="${startPage + 9 > totalNumber ? totalNumber : startPage + 9}"/>
-    <c:set var="startPage" value="${endPage - 9 <= 0 ? 1 : endPage - 9}"/>
+    <c:set var="endPage" value="${pageDto.plpPagingNumbers().get(pageDto.plpPagingNumbers().size() - 1)}"/>
+    <c:set var="startPage" value="${pageDto.plpPagingNumbers().get(0)}"/>
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
         <li class="page-item ${i eq pageNum ? "active" : ""}">
             <a class="page-link"
