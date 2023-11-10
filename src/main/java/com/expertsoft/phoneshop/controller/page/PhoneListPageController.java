@@ -28,7 +28,7 @@ public class PhoneListPageController {
                                @RequestParam(defaultValue = "id") String sortBy,
                                @RequestParam(defaultValue = "ASC") String sortOrder,
                                Model model) {
-        var phonesPlpDto = phoneService.getPhonesPage(pageNum, pageSize, sortBy, sortOrder);
+        var phonesPlpDto = phoneService.getPhonesPlp(pageNum, pageSize, sortBy, sortOrder);
         model.addAttribute(PHONES, phonesPlpDto);
 
         return PHONE_LIST_PAGE;
