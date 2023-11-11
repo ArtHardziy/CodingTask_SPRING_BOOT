@@ -6,8 +6,12 @@
 <%@ attribute name="pageSize" type="java.lang.Integer" required="true" %>
 <%@ attribute name="sortBy" type="java.lang.String" required="true" %>
 <%@ attribute name="sortOrder" type="java.lang.String" required="true" %>
-<%@attribute name="pageDto" type="com.expertsoft.phoneshop.persistence.model.dto.PlpDto" required="true" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+
+<%@attribute name="plpPagingNumbers" type="java.util.List" required="true" %>
+
+<c:if test="${plpPagingNumbers.size() > 0}">
 <div class="float-right">
 <uL class="pagination justify-content-end">
 
@@ -19,8 +23,8 @@
             <span class="sr-only">Previous</span>
         </a>
     </li>
-    <c:set var="endPage" value="${pageDto.plpPagingNumbers().get(pageDto.plpPagingNumbers().size() - 1)}"/>
-    <c:set var="startPage" value="${pageDto.plpPagingNumbers().get(0)}"/>
+    <c:set var="endPage" value="${plpPagingNumbers.get(plpPagingNumbers.size() - 1)}"/>
+    <c:set var="startPage" value="${plpPagingNumbers.get(0)}"/>
     <c:forEach var="i" begin="${startPage}" end="${endPage}">
         <li class="page-item ${i eq pageNum ? "active" : ""}">
             <a class="page-link"
@@ -39,3 +43,5 @@
 
 </uL>
 </div>
+
+</c:if>
