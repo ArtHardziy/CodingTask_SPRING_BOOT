@@ -7,6 +7,18 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: <github-client-id>
+            clientSecret: <github-client-secret>
+          google:
+            client-id: <google-client-id>
+            client-secret: <google-client-secret>
+
+
 
 logging:
   level:
@@ -16,3 +28,5 @@ phoneshop:
   plp:
     max-page-size: 5
     max-number-of-pages: 3
+
+debug: true

@@ -12,32 +12,32 @@
     <c:if test="${error != null}">
         <c:out value="${error}"/>
     </c:if>
-        <div class="search-container">
-            <form:form class="search-form" method="post" modelAttribute="searchFormModel">
-                <div class="search-form__label-and-input">
-                    <form:label path="searchQuery" for="searchQuery" >Search Query</form:label>
-                    <div>
-                        <form:input path="searchQuery" class="search-form__input" type="text" id="searchQuery"
-                                    value="${searchFormModel.searchQuery}"/>
-                    </div>
+    <div class="search-container">
+        <form:form class="search-form" method="post" modelAttribute="searchFormModel">
+            <div class="search-form__label-and-input">
+                <form:label path="searchQuery" for="searchQuery">Search Query</form:label>
+                <div>
+                    <form:input path="searchQuery" class="search-form__input" type="text" id="searchQuery"
+                                value="${searchFormModel.searchQuery}"/>
                 </div>
-                <div class="search-form__label-and-input">
-                    <form:label path="fromPrice" for="fromPrice">From price</form:label>
-                    <div>
-                        <form:input path="fromPrice" class="search-form__input" type="text" id="fromPrice"
-                                    value="${searchFormModel.fromPrice}"/>
-                    </div>
+            </div>
+            <div class="search-form__label-and-input">
+                <form:label path="fromPrice" for="fromPrice">From price</form:label>
+                <div>
+                    <form:input path="fromPrice" class="search-form__input" type="text" id="fromPrice"
+                                value="${searchFormModel.fromPrice}"/>
                 </div>
-                <div class="search-form__label-and-input">
-                    <form:label path="toPrice" for="toPrice">To price</form:label>
-                    <div>
-                        <form:input path="toPrice" class="search-form__input" type="text" id="toPrice"
-                                    value="${searchFormModel.toPrice}"/>
-                    </div>
+            </div>
+            <div class="search-form__label-and-input">
+                <form:label path="toPrice" for="toPrice">To price</form:label>
+                <div>
+                    <form:input path="toPrice" class="search-form__input" type="text" id="toPrice"
+                                value="${searchFormModel.toPrice}"/>
                 </div>
-                <form:button  class="btn btn-primary search-button">Search</form:button>
-            </form:form>
-        </div>
+            </div>
+            <form:button class="btn btn-primary search-button">Search</form:button>
+        </form:form>
+    </div>
     <div class="row justify-content-center font-italic mb-3">
         Found <c:out value="${phonePage.totalElements}"/> results!
     </div>

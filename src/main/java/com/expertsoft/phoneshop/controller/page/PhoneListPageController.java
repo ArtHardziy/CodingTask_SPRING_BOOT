@@ -1,22 +1,16 @@
 package com.expertsoft.phoneshop.controller.page;
 
 import com.expertsoft.phoneshop.persistence.model.Phone;
-import com.expertsoft.phoneshop.persistence.model.PhoneSortingType;
 import com.expertsoft.phoneshop.persistence.model.dto.PlpDto;
 import com.expertsoft.phoneshop.persistence.model.dto.SearchFormModel;
 import com.expertsoft.phoneshop.service.PhoneService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.expertsoft.phoneshop.PhoneShopConstants.PHONES_PATH;
 import static com.expertsoft.phoneshop.service.AppUtil.processPageableRequest;

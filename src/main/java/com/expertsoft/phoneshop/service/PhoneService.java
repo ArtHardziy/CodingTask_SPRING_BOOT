@@ -34,7 +34,7 @@ public class PhoneService {
     }
 
     private Page<Phone> getPage(Pageable requestedPage,
-                                      SearchFormModel searchFormModel) {
+                                SearchFormModel searchFormModel) {
         if (searchFormModel == null) {
             return productRepository.findAll(requestedPage);
         } else {
@@ -58,7 +58,7 @@ public class PhoneService {
         if (!searchFormModel.getSearchQuery().isEmpty()) {
             String searchQuery = searchFormModel.getSearchQuery();
             if (isFromAndToPricesZero) {
-                return productRepository.findAllByBrandContainingIgnoreCaseOrModelContainingIgnoreCase(searchQuery,searchQuery, requestedPage);
+                return productRepository.findAllByBrandContainingIgnoreCaseOrModelContainingIgnoreCase(searchQuery, searchQuery, requestedPage);
             } else if (fromPrice.compareTo(BigDecimal.ZERO) != 0 && toPrice.compareTo(BigDecimal.ZERO) != 0) {
                 return productRepository.findAllByBrandContainingIgnoreCaseOrModelContainingIgnoreCaseAndPriceLessThanEqualAndPriceGreaterThanEqual(searchQuery, searchQuery, toPrice, fromPrice, requestedPage);
             } else if (toPrice.compareTo(BigDecimal.ZERO) != 0) {
@@ -71,7 +71,7 @@ public class PhoneService {
                 return productRepository.findAll(requestedPage);
             } else if (fromPrice.compareTo(BigDecimal.ZERO) != 0 && toPrice.compareTo(BigDecimal.ZERO) != 0) {
                 return productRepository.findAllByPriceGreaterThanEqualAndPriceLessThanEqual(fromPrice, toPrice, requestedPage);
-            } else if (toPrice.compareTo(BigDecimal.ZERO) != 0){
+            } else if (toPrice.compareTo(BigDecimal.ZERO) != 0) {
                 return productRepository.findAllByPriceLessThanEqual(toPrice, requestedPage);
             } else {
                 return productRepository.findAllByPriceGreaterThanEqual(fromPrice, requestedPage);

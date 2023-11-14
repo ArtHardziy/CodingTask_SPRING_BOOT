@@ -22,6 +22,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Phone, Lon
     Optional<Phone> findById(Long id);
 
     Page<Phone> findAllByBrandContainingIgnoreCaseAndModelContainingIgnoreCaseAndPriceGreaterThanAndPriceLessThan(String brand, String model, BigDecimal fromPrice, BigDecimal toPrice, Pageable pageable);
+
     Page<Phone> findAllByBrandOrModel(String brand, String model, Pageable pageable);
 
     List<Phone> findAllByBrandEqualsIgnoreCaseOrModelContainingIgnoreCase(String brand, String model);

@@ -14,6 +14,7 @@ public class PageProperties {
     public int getMaxNumberOfPages() {
         return Integer.parseInt(this.maxNumberOfPages);
     }
+
     public int getMaxPageSize() {
         return Integer.parseInt(this.maxPageSize);
     }

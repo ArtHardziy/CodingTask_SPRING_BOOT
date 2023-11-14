@@ -2,15 +2,6 @@ package com.expertsoft.phoneshop.persistence.model.dto;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.BootstrapRegistry;
-import org.springframework.boot.jackson.JsonComponent;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.SessionScope;
 
 import java.math.BigDecimal;
 

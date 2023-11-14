@@ -30,7 +30,10 @@
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
                         <div class="row justify-content-center">
-                            Login via GitHub >>
+                            <a href="${pageContext.request.contextPath}/oauth2/authorization/github">Login via GitHub >></a>
+                        </div>
+                        <div class="row justify-content-center">
+                            <a href="${pageContext.request.contextPath}/oauth2/authorization/google">Login via Google >></a>
                         </div>
                     </form>
                 </div>
