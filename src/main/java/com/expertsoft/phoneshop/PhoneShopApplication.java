@@ -15,6 +15,7 @@ public class PhoneShopApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PhoneShopApplication.class, args);
+		//per task commit
 	}
 
 }
