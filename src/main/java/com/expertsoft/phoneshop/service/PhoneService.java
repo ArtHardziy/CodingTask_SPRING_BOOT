@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.expertsoft.phoneshop.service.AppUtil.resolvePlpPagingNumbers;
+
 @Service
 @AllArgsConstructor
 public class PhoneService {
@@ -77,28 +79,6 @@ public class PhoneService {
                 return productRepository.findAllByPriceGreaterThanEqual(fromPrice, requestedPage);
             }
         }
-    }
-
-    private List<Integer> resolvePlpPagingNumbers(int currentPageNumber, int maxNumberOfPages, int totalPages) {
-        int arrayLength = Math.min(maxNumberOfPages, totalPages);
-        var plpPagingNumbers = new ArrayList<Integer>(arrayLength);
-
-        int centerIndex = arrayLength / 2 + arrayLength % 2;
-        int indentedLeft = currentPageNumber - centerIndex - 1;
-        int indentedRight = currentPageNumber + centerIndex;
-        int startPlpIndex = currentPageNumber - centerIndex;
-        if (indentedLeft <= 0) {
-            startPlpIndex = 1;
-        } else if (indentedRight >= totalPages) {
-            startPlpIndex = totalPages - arrayLength + 1;
-        }
-        if (maxNumberOfPages == 1) {
-            startPlpIndex = currentPageNumber;
-        }
-        for (int i = 0; i < arrayLength; i++) {
-            plpPagingNumbers.add(startPlpIndex++);
-        }
-        return plpPagingNumbers;
     }
 
     private int resolvePageSize(String size) {

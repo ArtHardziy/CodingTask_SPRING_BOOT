@@ -12,13 +12,11 @@ spring:
       client:
         registration:
           github:
-            clientId: <github-client-id>
-            clientSecret: <github-client-secret>
+            clientId: c62c8890e77ee4822e60
+            clientSecret: 1e227549eb121a157be171f719d95aff31924cf5
           google:
-            client-id: <google-client-id>
-            client-secret: <google-client-secret>
-
-
+            client-id: 57433330595-u3ns45al52dlcnfnad9d13eov0kb79fl.apps.googleusercontent.com
+            client-secret: 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
 
 logging:
   level:
@@ -28,5 +26,3 @@ phoneshop:
   plp:
     max-page-size: 5
     max-number-of-pages: 3
-
-debug: true

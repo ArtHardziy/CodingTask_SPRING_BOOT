@@ -1,5 +1,6 @@
 package com.expertsoft.phoneshop.controller.rest;
 
+import com.expertsoft.phoneshop.persistence.model.PhoneshopUserPrincipal;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -15,10 +16,13 @@ import java.util.Map;
 public class PhoneshopUserRestController {
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
+    public Map<String, Object> user(@AuthenticationPrincipal PhoneshopUserPrincipal principal) {
         if (principal != null) {
-            return Collections.singletonMap("name", principal.getAttribute("name"));
+            if (principal.getAttributes() != null) {
+                return Collections.singletonMap("name", principal.getAttribute("name"));
+            } else if (principal.getName() != null) {
+                return Collections.singletonMap("name", principal.getName());
+            }
         }
         return null;
     }

@@ -56,12 +56,21 @@
         </c:forEach>
         </tbody>
     </table>
-    <common:paginationOnPage totalNumber="${phonePage.totalPages}"
-                             pageNum="${pageable.pageNumber + 1}"
-                             pageSize="${pageable.pageSize}"
-                             sortBy="${sortBy}"
-                             sortOrder="${sortOrder}"
-                             plpPagingNumbers="${plpPagingNumbers}">
-    </common:paginationOnPage>
+    <c:choose>
+        <c:when test="${not empty plpPagingNumbers}">
+            <common:paginationOnPage totalNumber="${phonePage.totalPages}"
+                                     pageNum="${pageable.pageNumber + 1}"
+                                     pageSize="${pageable.pageSize}"
+                                     sortBy="${sortBy}"
+                                     sortOrder="${sortOrder}"
+                                     plpPagingNumbers="${plpPagingNumbers}"
+                                    url="/phones">
+            </common:paginationOnPage>
+        </c:when>
+        <c:otherwise>
+            This is the only page
+        </c:otherwise>
+    </c:choose>
+
 
 </common:page>

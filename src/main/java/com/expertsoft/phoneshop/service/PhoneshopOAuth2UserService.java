@@ -1,9 +1,7 @@
 package com.expertsoft.phoneshop.service;
 
 import com.expertsoft.phoneshop.exceptions.OAuth2AuthenticationProcessingException;
-import com.expertsoft.phoneshop.persistence.model.AuthProvider;
-import com.expertsoft.phoneshop.persistence.model.PhoneshopUser;
-import com.expertsoft.phoneshop.persistence.model.PhoneshopUserPrincipal;
+import com.expertsoft.phoneshop.persistence.model.*;
 import com.expertsoft.phoneshop.persistence.model.dto.user.OAuth2UserInfo;
 import com.expertsoft.phoneshop.persistence.model.dto.user.OAuth2UserInfoFactory;
 import com.expertsoft.phoneshop.persistence.repository.PhoneshopUserRepository;
@@ -17,6 +15,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -73,6 +72,11 @@ public class PhoneshopOAuth2UserService extends DefaultOAuth2UserService {
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setAvatar_url(oAuth2UserInfo.getImageUrl());
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        Role userRole = new Role();
+        userRole.setRoleType(RoleType.USER);
+        user.setRole(userRole);
         return userRepo.save(user);
     }
 
@@ -80,6 +84,7 @@ public class PhoneshopOAuth2UserService extends DefaultOAuth2UserService {
                                              OAuth2UserInfo phoneshopUserInfoDto) {
         existingUser.setName(phoneshopUserInfoDto.getName());
         existingUser.setAvatar_url(phoneshopUserInfoDto.getImageUrl());
+        existingUser.setUpdatedAt(LocalDateTime.now());
         return userRepo.save(existingUser);
     }
 }

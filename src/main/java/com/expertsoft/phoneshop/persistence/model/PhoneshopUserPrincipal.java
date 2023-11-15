@@ -8,10 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 public class PhoneshopUserPrincipal implements OAuth2User, UserDetails {
@@ -40,8 +37,11 @@ public class PhoneshopUserPrincipal implements OAuth2User, UserDetails {
     }
 
     public static PhoneshopUserPrincipal create(PhoneshopUser user) {
-        List<GrantedAuthority> authorities = Collections.
+        List<? extends GrantedAuthority> authorities = Collections.
                 singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        if (user.getRole() != null) {
+            authorities = user.getAuthorities().stream().toList();
+        }
 
         return new PhoneshopUserPrincipal(
                 user.getId(),
@@ -86,6 +86,6 @@ public class PhoneshopUserPrincipal implements OAuth2User, UserDetails {
 
     @Override
     public String getName() {
-        return String.valueOf(this.id);
+        return String.valueOf(this.name);
     }
 }

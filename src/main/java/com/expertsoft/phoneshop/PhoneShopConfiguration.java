@@ -11,9 +11,6 @@ import static com.expertsoft.phoneshop.PhoneShopConstants.*;
 @AllArgsConstructor
 public class PhoneShopConfiguration implements WebMvcConfigurer {
 
-    private static final String LOGIN_PAGE = "loginPage";
-    private static final String ADMIN_PANEL_PAGE = "admin/adminPanelPage";
-
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController(LOGIN_PATH).setViewName(LOGIN_PAGE);

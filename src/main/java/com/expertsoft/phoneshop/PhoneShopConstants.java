@@ -15,6 +15,9 @@ public class PhoneShopConstants {
     public static final String LOCATION_HEADER = "Location";
     public static final String ROOT_CONTEXT_PATH = "/";
 
+    public static final String LOGIN_PAGE = "loginPage";
+    public static final String ADMIN_PANEL_PAGE = "admin/adminPanelPage";
+
     private PhoneShopConstants() {
         // instance not allowed
     }

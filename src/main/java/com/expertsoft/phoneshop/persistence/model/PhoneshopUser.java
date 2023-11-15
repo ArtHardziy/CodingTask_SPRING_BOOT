@@ -3,8 +3,10 @@ package com.expertsoft.phoneshop.persistence.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Data
 @Entity
@@ -13,9 +15,6 @@ public class PhoneshopUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Authority> authorities;
 
     @Column(unique = true, nullable = false)
     private String name;
@@ -32,4 +31,15 @@ public class PhoneshopUser {
     private AuthProvider provider;
     private String providerId;
     private boolean enabled;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Role role;
+
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.role.getRoleType().getAuthorities().stream().toList();
+    }
 }
