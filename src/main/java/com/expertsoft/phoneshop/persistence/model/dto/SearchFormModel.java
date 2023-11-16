@@ -19,7 +19,7 @@ public class SearchFormModel {
     }
 
     public BigDecimal getBigDecimalToPrice() {
-        if (this.toPrice.isEmpty()) return BigDecimal.ZERO;
+        if (this.toPrice.isEmpty()) return BigDecimal.valueOf(Long.MAX_VALUE);
         return new BigDecimal(Long.parseLong(toPrice));
     }
 

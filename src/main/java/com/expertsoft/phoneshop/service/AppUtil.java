@@ -21,6 +21,12 @@ public class AppUtil {
         return PageRequest.of(--number, size, Sort.by(List.of(order)));
     }
 
+    public static Pageable processPageableRequest(Integer pageNum, Integer pageSize,
+                                                  String sortBy, String sortOrder) {
+        Sort.Order order = resolveSortOrder(sortBy, sortOrder);
+        return PageRequest.of(--pageNum, pageSize, Sort.by(List.of(order)));
+    }
+
     private static Sort.Order resolveSortOrder(String sortBy, String sortOrder) {
         Sort.Direction sortDirection = switch (sortOrder.toLowerCase()) {
             case "asc" -> Sort.Direction.ASC;

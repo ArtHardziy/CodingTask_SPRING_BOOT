@@ -5,14 +5,15 @@ import com.expertsoft.phoneshop.persistence.model.Phone;
 import com.expertsoft.phoneshop.persistence.model.dto.PhoneDto;
 import com.expertsoft.phoneshop.persistence.model.dto.PlpDto;
 import com.expertsoft.phoneshop.persistence.model.dto.SearchFormModel;
+import com.expertsoft.phoneshop.persistence.repository.PhoneRepository;
 import com.expertsoft.phoneshop.persistence.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ import static com.expertsoft.phoneshop.service.AppUtil.resolvePlpPagingNumbers;
 public class PhoneService {
 
     private ProductRepository productRepository;
+    private PhoneRepository phoneRepo;
     private PageProperties pageProperties;
 
     public PhoneDto getPhoneById(Long id) {
@@ -35,63 +37,69 @@ public class PhoneService {
         }
     }
 
-    private Page<Phone> getPage(Pageable requestedPage,
-                                SearchFormModel searchFormModel) {
-        if (searchFormModel == null) {
-            return productRepository.findAll(requestedPage);
-        } else {
-            return getPhonesPage(requestedPage, searchFormModel);
+    private int resolvePageSize(int size) {
+        if (pageProperties.getMaxPageSize() == 0) {
+            return size;
         }
+        if (size > pageProperties.getMaxPageSize()) {
+            size = pageProperties.getMaxPageSize();
+        }
+        return size;
     }
 
-    public PlpDto<Phone> getPhonesPlp(Pageable requestedPage,
-                                      SearchFormModel searchFormModel) {
-        Page<Phone> page = getPage(requestedPage, searchFormModel);
+    public PlpDto<Phone> getPhonePlp(SearchFormModel searchFormModel,
+                              Pageable requestedPage) {
+
+        Page<Phone> phonesPageBySearchFormModel = getPhonesPageBySearchFormModel(searchFormModel,
+                requestedPage);
+
         var plpPagingNumbers = resolvePlpPagingNumbers(requestedPage.getPageNumber() + 1,
                 pageProperties.getMaxNumberOfPages(),
-                page.getTotalPages());
-        return new PlpDto<>(requestedPage, page, plpPagingNumbers, searchFormModel);
+                phonesPageBySearchFormModel.getTotalPages());
+        return new PlpDto<>(requestedPage,
+                phonesPageBySearchFormModel,
+                plpPagingNumbers,
+                searchFormModel);
     }
 
-    private Page<Phone> getPhonesPage(Pageable requestedPage, SearchFormModel searchFormModel) {
+
+    public Page<Phone> getPhonesPageBySearchFormModel(SearchFormModel searchFormModel,
+                                                      Pageable pageable
+
+    ) {
+        var pageRequest = createPageRequestUsing(pageable.getPageNumber(),
+                pageable.getPageSize());
+        List<Phone> allPhones = getPhonesBySearchModel(searchFormModel);
+
+        var start = (int) pageRequest.getOffset();
+        var end = Math.min((start + pageRequest.getPageSize()), allPhones.size());
+
+        var pageContent = allPhones.subList(start, end);
+        return new PageImpl<>(pageContent, pageRequest, allPhones.size());
+    }
+
+    private List<Phone> getPhonesBySearchModel(SearchFormModel searchFormModel) {
+        List<Phone> allPhones = getPhonesBySearchQuery(searchFormModel.getSearchQuery());
+
         var fromPrice = searchFormModel.getBigDecimalFromPrice();
         var toPrice = searchFormModel.getBigDecimalToPrice();
-        boolean isFromAndToPricesZero = fromPrice.compareTo(BigDecimal.ZERO) == 0 && toPrice.compareTo(BigDecimal.ZERO) == 0;
-        if (!searchFormModel.getSearchQuery().isEmpty()) {
-            String searchQuery = searchFormModel.getSearchQuery();
-            if (isFromAndToPricesZero) {
-                return productRepository.findAllByBrandContainingIgnoreCaseOrModelContainingIgnoreCase(searchQuery, searchQuery, requestedPage);
-            } else if (fromPrice.compareTo(BigDecimal.ZERO) != 0 && toPrice.compareTo(BigDecimal.ZERO) != 0) {
-                return productRepository.findAllByBrandContainingIgnoreCaseOrModelContainingIgnoreCaseAndPriceLessThanEqualAndPriceGreaterThanEqual(searchQuery, searchQuery, toPrice, fromPrice, requestedPage);
-            } else if (toPrice.compareTo(BigDecimal.ZERO) != 0) {
-                return productRepository.findAllByBrandContainingIgnoreCaseOrModelContainingIgnoreCaseAndPriceLessThanEqual(searchQuery, searchQuery, toPrice, requestedPage);
-            } else {
-                return productRepository.findAllByBrandContainingIgnoreCaseOrModelContainingIgnoreCaseAndPriceGreaterThanEqual(searchQuery, searchQuery, fromPrice, requestedPage);
-            }
+        return allPhones.stream()
+                .filter(phone -> fromPrice.compareTo(phone.getPrice()) < 0)
+                .filter(phone -> toPrice.compareTo(phone.getPrice()) > 0)
+                .toList();
+    }
+
+    private List<Phone> getPhonesBySearchQuery(String searchQuery) {
+        if (searchQuery.isBlank()) {
+            return phoneRepo.findAll();
         } else {
-            if (isFromAndToPricesZero) {
-                return productRepository.findAll(requestedPage);
-            } else if (fromPrice.compareTo(BigDecimal.ZERO) != 0 && toPrice.compareTo(BigDecimal.ZERO) != 0) {
-                return productRepository.findAllByPriceGreaterThanEqualAndPriceLessThanEqual(fromPrice, toPrice, requestedPage);
-            } else if (toPrice.compareTo(BigDecimal.ZERO) != 0) {
-                return productRepository.findAllByPriceLessThanEqual(toPrice, requestedPage);
-            } else {
-                return productRepository.findAllByPriceGreaterThanEqual(fromPrice, requestedPage);
-            }
+            return phoneRepo
+                    .findAllByModelContainingIgnoreCaseOrBrandContainingIgnoreCase(
+                            searchQuery, searchQuery);
         }
     }
 
-    private int resolvePageSize(String size) {
-        if (size == null || size.equals("0")) {
-            size = String.valueOf(pageProperties.getMaxPageSize());
-        }
-        int pageSize = Integer.parseInt(size);
-        if (pageProperties.getMaxPageSize() == 0) {
-            return pageSize;
-        }
-        if (pageSize > pageProperties.getMaxPageSize()) {
-            pageSize = pageProperties.getMaxPageSize();
-        }
-        return pageSize;
+    private Pageable createPageRequestUsing(int page, int size) {
+        return PageRequest.of(page, resolvePageSize(size));
     }
 }
