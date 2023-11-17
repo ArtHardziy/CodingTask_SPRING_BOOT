@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserPageableRepository extends PagingAndSortingRepository<PhoneshopUser, Long> {
 
-    //  Optional<PhoneshopUser> findByLogin(String login);
-
 }

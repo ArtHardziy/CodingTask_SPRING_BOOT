@@ -25,9 +25,9 @@ public class PhoneshopOAuth2UserService extends DefaultOAuth2UserService {
 
     private final PhoneshopUserRepository userRepo;
 
+    @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
-
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
         } catch (AuthenticationException ex) {

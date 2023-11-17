@@ -23,6 +23,11 @@ logging:
     com.expertsoft.phoneshop: DEBUG
 
 phoneshop:
-  plp:
-    max-page-size: 5
-    max-number-of-pages: 3
+  max-page-size: 5
+  max-number-of-pages: 3
+  super-admin:
+    name: Super_Admin
+    email: phoneshop.super-admin@expert-sfot.net
+    password: superExpertSoft
+    company: Expert_Software_Development
+    location: Minsk

@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.io.Serial;
 import java.util.*;
 
 @Data
@@ -22,13 +23,15 @@ public class PhoneshopUserPrincipal implements OAuth2User, UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
     @Getter
     @Setter
-    private Map<String, Object> attributes;
+    private transient Map<String, Object> attributes;
 
-    public PhoneshopUserPrincipal(Long id,
-                                  String name,
-                                  String email,
-                                  String password,
-                                  Collection<? extends GrantedAuthority> authorities) {
+    public PhoneshopUserPrincipal(
+            Long id,
+            String name,
+            String email,
+            String password,
+            Collection<? extends GrantedAuthority> authorities
+    ) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -42,7 +45,6 @@ public class PhoneshopUserPrincipal implements OAuth2User, UserDetails {
         if (user.getRole() != null) {
             authorities = user.getAuthorities().stream().toList();
         }
-
         return new PhoneshopUserPrincipal(
                 user.getId(),
                 user.getName(),

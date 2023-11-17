@@ -22,5 +22,4 @@ public class Phone {
     private String description;
     @NotNull
     private BigDecimal price;
-
 }

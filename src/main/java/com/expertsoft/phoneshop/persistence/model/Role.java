@@ -1,7 +1,7 @@
 package com.expertsoft.phoneshop.persistence.model;
+
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 
 @Entity
 @Data

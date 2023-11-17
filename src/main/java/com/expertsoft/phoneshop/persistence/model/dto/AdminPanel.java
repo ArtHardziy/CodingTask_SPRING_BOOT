@@ -8,12 +8,10 @@ import java.util.List;
 
 @Data
 public class AdminPanel {
-
     private Long numberRegisteredUsers;
     private List<PhoneshopUser> registeredUsersList;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
     private int pageSize;
     private int currentPageNumber;
     private int totalPages;
-
 }

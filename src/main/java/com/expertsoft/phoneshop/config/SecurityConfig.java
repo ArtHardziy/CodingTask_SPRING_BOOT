@@ -1,5 +1,6 @@
 package com.expertsoft.phoneshop.config;
 
+import com.expertsoft.phoneshop.persistence.model.AppProperties;
 import com.expertsoft.phoneshop.persistence.model.PhoneshopUser;
 import com.expertsoft.phoneshop.persistence.model.Role;
 import com.expertsoft.phoneshop.persistence.model.RoleType;
@@ -11,10 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,30 +34,18 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final PhoneshopUserRepository phoneshopUserRepository;
     private final PhoneshopOAuth2UserService phoneshopOAuth2UserService;
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(phoneshopUserDetailsService(phoneshopUserRepository));
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+    private final AppProperties appProperties;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authReq -> authReq
+                .authorizeHttpRequests(authReqCustomize -> authReqCustomize
                         .requestMatchers(mvc.pattern("/actuator/health"),
                                 mvc.pattern("/"),
                                 mvc.pattern("/phones**"),
+                                mvc.pattern("/phones/searchByForm/**"),
                                 mvc.pattern("/error**"),
                                 mvc.pattern("/css/phoneshop.css"),
                                 mvc.pattern("/webjars/bootstrap/css/bootstrap.min.css"),
@@ -84,16 +69,14 @@ public class SecurityConfig {
                         .loginProcessingUrl("/signin")
                         .permitAll()
                 )
-                .logout(l -> l
+                .logout(logoutCustomize -> logoutCustomize
                         .permitAll()
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(false)
                         .logoutSuccessUrl("/phones")
-                        .logoutSuccessHandler(((request, response, authentication) -> {
-                            response.sendRedirect("/");
-                        }))
+                        .logoutSuccessHandler(((request, response, authentication) -> response.sendRedirect("/")))
                 )
-                .oauth2Login(customizer -> customizer
+                .oauth2Login(oauth2Customizer -> oauth2Customizer
                         .loginPage("/login").permitAll()
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(phoneshopOAuth2UserService)
@@ -128,20 +111,24 @@ public class SecurityConfig {
 
     @Bean
     public PhoneshopUserDetailsService phoneshopUserDetailsService(PhoneshopUserRepository phoneshopUserRepository) {
+        var adminPhoneshopUser = getSuperAdminPhoneshopUserBasedOnConfigPropertiesSuperAdmin(appProperties.getSuperAdmin());
+        phoneshopUserRepository.save(adminPhoneshopUser);
+        return new PhoneshopUserDetailsService(phoneshopUserRepository);
+    }
+
+    private PhoneshopUser getSuperAdminPhoneshopUserBasedOnConfigPropertiesSuperAdmin(AppProperties.SuperAdmin superAdmin) {
         PhoneshopUser adminPhoneshopUser = new PhoneshopUser();
-        adminPhoneshopUser.setName("Super_Admin");
-        adminPhoneshopUser.setEmail("phoneshop.super-admin@expert-sfot.net");
-        adminPhoneshopUser.setPassword(this.passwordEncoder().encode("superExpertSoft"));
-        adminPhoneshopUser.setCompany("Expert Software Development");
-        adminPhoneshopUser.setLocation("Minsk");
+        adminPhoneshopUser.setName(superAdmin.getName());
+        adminPhoneshopUser.setEmail(superAdmin.getEmail());
+        adminPhoneshopUser.setPassword(this.passwordEncoder().encode(superAdmin.getPassword()));
+        adminPhoneshopUser.setCompany(superAdmin.getCompany());
+        adminPhoneshopUser.setLocation(superAdmin.getLocation());
         Role adminRole = new Role();
         adminRole.setRoleType(RoleType.ADMIN);
         adminPhoneshopUser.setRole(adminRole);
         adminPhoneshopUser.setCreatedAt(LocalDateTime.now());
         adminPhoneshopUser.setUpdatedAt(LocalDateTime.now());
-        phoneshopUserRepository.save(adminPhoneshopUser);
-
-        return new PhoneshopUserDetailsService(phoneshopUserRepository);
+        return adminPhoneshopUser;
     }
 
 }

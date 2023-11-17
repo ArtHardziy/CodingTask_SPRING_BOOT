@@ -13,7 +13,7 @@
         <c:out value="${error}"/>
     </c:if>
     <div class="search-container">
-        <form:form class="search-form" method="post" modelAttribute="searchFormModel">
+        <form:form action="${pageContext.request.contextPath}/phones/searchByForm" class="search-form" method="get" modelAttribute="searchFormModel">
             <div class="search-form__label-and-input">
                 <form:label path="searchQuery" for="searchQuery">Search Query</form:label>
                 <div>
@@ -71,6 +71,4 @@
             This is the only page
         </c:otherwise>
     </c:choose>
-
-
 </common:page>

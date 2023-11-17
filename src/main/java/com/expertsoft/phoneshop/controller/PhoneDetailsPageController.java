@@ -1,4 +1,4 @@
-package com.expertsoft.phoneshop.controller.page;
+package com.expertsoft.phoneshop.controller;
 
 import com.expertsoft.phoneshop.service.PhoneService;
 import lombok.AllArgsConstructor;
@@ -15,14 +15,13 @@ import static com.expertsoft.phoneshop.PhoneShopConstants.*;
 @AllArgsConstructor
 public class PhoneDetailsPageController {
 
-    private PhoneService phoneService;
+    private final PhoneService phoneService;
 
     @GetMapping(PHONE_ID_REQUEST_PATH)
     public String getPhoneDetails(@PathVariable(PHONE_ID_ATTRIBUTE) Long phoneId, Model model) {
-        if (phoneId == null) {
-            return PHONE_DETAILS_PAGE;
+        if (phoneId != null) {
+            model.addAttribute(PHONE, phoneService.getPhoneById(phoneId));
         }
-        model.addAttribute(PHONE, phoneService.getPhoneById(phoneId));
         return PHONE_DETAILS_PAGE;
     }
 }

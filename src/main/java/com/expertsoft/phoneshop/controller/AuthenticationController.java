@@ -1,4 +1,4 @@
-package com.expertsoft.phoneshop.controller.page;
+package com.expertsoft.phoneshop.controller;
 
 import com.expertsoft.phoneshop.persistence.model.dto.SignInRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +17,4 @@ public class AuthenticationController {
         model.addAttribute("signInRequest", new SignInRequest());
         return "loginPage";
     }
-
 }

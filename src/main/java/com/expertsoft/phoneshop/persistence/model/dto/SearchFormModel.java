@@ -5,12 +5,14 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+import static com.expertsoft.phoneshop.PhoneShopConstants.SEARCH_FORM_PRICE_VALIDATION_EXC_MSG;
+
 @Data
 public class SearchFormModel {
     private String searchQuery = "";
-    @Pattern(regexp = "^[0-9]+(\\.[0-9]+)?$", message = "Quantity must be a numeric value")
+    @Pattern(regexp = "^[0-9]+(\\.[0-9]+)?$", message = SEARCH_FORM_PRICE_VALIDATION_EXC_MSG)
     private String fromPrice = "";
-    @Pattern(regexp = "^[0-9]+(\\.[0-9]+)?$", message = "Quantity must be a numeric value")
+    @Pattern(regexp = "^[0-9]+(\\.[0-9]+)?$", message = SEARCH_FORM_PRICE_VALIDATION_EXC_MSG)
     private String toPrice = "";
 
     public BigDecimal getBigDecimalFromPrice() {
@@ -22,5 +24,4 @@ public class SearchFormModel {
         if (this.toPrice.isEmpty()) return BigDecimal.valueOf(Long.MAX_VALUE);
         return new BigDecimal(Long.parseLong(toPrice));
     }
-
 }
