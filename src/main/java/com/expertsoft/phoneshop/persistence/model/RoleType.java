@@ -44,5 +44,4 @@ public enum RoleType {
                 .map(SimpleGrantedAuthority::getAuthority)
                 .toArray(String[]::new);
     }
-
 }

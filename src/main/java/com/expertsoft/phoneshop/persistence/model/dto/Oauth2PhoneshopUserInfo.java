@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Oauth2PhoneshopUserInfo {
@@ -25,12 +25,11 @@ public class Oauth2PhoneshopUserInfo {
     private String company;
     private String password;
     private String email;
+    private String provider;
+    private String providerId;
 
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
-
-    private String provider;
-    private String providerId;
     private boolean enabled;
 }

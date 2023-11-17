@@ -1,6 +1,5 @@
 package com.expertsoft.phoneshop.service;
 
-import com.expertsoft.phoneshop.exceptions.ResourceNotFoundException;
 import com.expertsoft.phoneshop.persistence.model.PhoneshopUser;
 import com.expertsoft.phoneshop.persistence.model.PhoneshopUserPrincipal;
 import com.expertsoft.phoneshop.persistence.repository.PhoneshopUserRepository;
@@ -23,14 +22,5 @@ public class PhoneshopUserDetailsService implements UserDetailsService {
                         "User with email %s not found", email
                 )));
         return PhoneshopUserPrincipal.create(phoneshopUser);
-    }
-
-    @Transactional
-    public UserDetails loadUserById(Long id) {
-        PhoneshopUser user = phoneshopUserRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("User", "id", id)
-        );
-
-        return PhoneshopUserPrincipal.create(user);
     }
 }

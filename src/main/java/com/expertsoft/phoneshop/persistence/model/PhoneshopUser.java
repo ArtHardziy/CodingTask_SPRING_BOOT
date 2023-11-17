@@ -38,7 +38,6 @@ public class PhoneshopUser {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Role role;
 
-
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.role.getRoleType().getAuthorities().stream().toList();
     }

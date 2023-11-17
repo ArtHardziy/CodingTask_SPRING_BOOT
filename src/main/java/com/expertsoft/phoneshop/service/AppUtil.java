@@ -1,6 +1,8 @@
 package com.expertsoft.phoneshop.service;
 
 import com.expertsoft.phoneshop.persistence.model.PhoneSortingType;
+import com.expertsoft.phoneshop.persistence.model.dto.SearchFormModel;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -8,7 +10,13 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.expertsoft.phoneshop.PhoneShopConstants.*;
+
 public class AppUtil {
+
+    private AppUtil() {
+
+    }
 
     public static Pageable processPageableRequest(String pageNum, String pageSize, String sortBy, String sortOrder,
                                                   Pageable pageable) {
@@ -59,4 +67,20 @@ public class AppUtil {
         return plpPagingNumbers;
     }
 
+    public static SearchFormModel populateSearchFormModelIfSessionSearchFormModelHasNotBlankValues(HttpSession httpSession) {
+        var sessionSearchQuery = (String) httpSession.getAttribute(SEARCH_QUERY);
+        var sessionFromPrice = (String) httpSession.getAttribute(FROM_PRICE);
+        var sessionToPrice = (String) httpSession.getAttribute(TO_PRICE);
+        var searchFormModel = new SearchFormModel();
+        if (sessionSearchQuery != null && !sessionSearchQuery.isBlank()) {
+            searchFormModel.setSearchQuery(sessionSearchQuery);
+        }
+        if (sessionFromPrice != null && !sessionFromPrice.isBlank()) {
+            searchFormModel.setFromPrice(sessionFromPrice);
+        }
+        if (sessionToPrice != null && !sessionToPrice.isBlank()) {
+            searchFormModel.setToPrice(sessionToPrice);
+        }
+        return searchFormModel;
+    }
 }
